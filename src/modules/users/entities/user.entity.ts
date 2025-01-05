@@ -1,0 +1,48 @@
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+@Entity()
+export class User {
+  @PrimaryGeneratedColumn('increment', { type: 'bigint', unsigned: true })
+  id: number;
+
+  @Column({ type: 'varchar', length: 255, unique: true })
+  email: string;
+
+  @Column({ type: 'varchar', length: 255 })
+  password: string;
+
+  @Column({ type: 'varchar', length: 100 })
+  name: string;
+
+  @Column({ type: 'varchar', length: 20, nullable: true, unique: true })
+  nickname?: string;
+
+  @Column({ type: 'varchar', length: 20, nullable: true, unique: true })
+  phone_number?: string;
+
+  @Column({
+    type: 'enum',
+    enum: ['user', 'admin'],
+    default: 'user',
+  })
+  role: 'user' | 'admin';
+
+  @Column({ type: 'tinyint', width: 1, default: 1 })
+  is_active: boolean;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at?: Date;
+}
