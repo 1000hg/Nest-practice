@@ -59,6 +59,11 @@ export class UserController {
     return this.userService.readById(Number(id));
   }
 
+  @Get(':email')
+  async readByEmail(@Param('email') email: string): Promise<User> {
+    return this.userService.readByEmail(email);
+  }
+
   @Patch(':id')
   async updateInfo(
     @Param('id') id: number,
