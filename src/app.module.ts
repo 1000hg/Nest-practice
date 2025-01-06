@@ -6,6 +6,7 @@ import { UserModule } from 'modules/users/user.module';
 import * as path from 'path';
 import * as fs from 'fs';
 import { BackupModule } from 'backup/backup.module';
+import { AuthModule } from 'modules/auths/auth.module';
 
 /** 엔티티 동적 수집 */
 function collectEntities(): string[] {
@@ -56,6 +57,7 @@ function collectEntities(): string[] {
 
     UserModule,
     BackupModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
