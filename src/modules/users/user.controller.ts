@@ -20,7 +20,7 @@ export class UserController {
 
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.userService.register(createUserDto);
+    return this.userService.createInfo(createUserDto);
   }
 
   @Get('findAll')
@@ -51,12 +51,12 @@ export class UserController {
     const maxLimit = 100;
     const parsedLimit = Math.min(parseInt(limit, 10) || maxLimit, maxLimit);
 
-    return this.userService.findAll(filters, parsedLimit);
+    return this.userService.readByAll(filters, parsedLimit);
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<User> {
-    return this.userService.findOne(Number(id));
+    return this.userService.readById(Number(id));
   }
 
   @Patch(':id')
@@ -64,11 +64,11 @@ export class UserController {
     @Param('id') id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return this.userService.updateUser(id, updateUserDto);
+    return this.userService.updateInfo(id, updateUserDto);
   }
 
   @Delete(':id')
   async deleteUser(@Param('id') id: number): Promise<void> {
-    await this.userService.deleteUser(id);
+    await this.userService.deleteInfo(id);
   }
 }

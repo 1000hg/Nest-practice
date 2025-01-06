@@ -17,7 +17,7 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async register(createUserDto: CreateUserDto): Promise<User> {
+  async createInfo(createUserDto: CreateUserDto): Promise<User> {
     const { email, password, name, nickname, phone_number, role } =
       createUserDto;
 
@@ -43,7 +43,7 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  async findAll(filters?: Partial<User>, limit = 10): Promise<User[]> {
+  async readByAll(filters?: Partial<User>, limit = 10): Promise<User[]> {
     const where: Partial<User> = {};
 
     if (filters?.name) {
@@ -64,11 +64,11 @@ export class UserService {
     });
   }
 
-  async findOne(id: number): Promise<User> {
+  async readById(id: number): Promise<User> {
     return this.userRepository.findOneBy({ id });
   }
 
-  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async updateInfo(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException('사용자를 찾을 수 없습니다.');
@@ -78,7 +78,7 @@ export class UserService {
     return this.userRepository.save(updatedUser);
   }
 
-  async deleteUser(id: number): Promise<void> {
+  async deleteInfo(id: number): Promise<void> {
     const deleteResult = await this.userRepository.delete(id);
     if (deleteResult.affected === 0) {
       throw new NotFoundException('사용자를 찾을 수 없습니다.');
