@@ -18,12 +18,12 @@ import { ApiQuery } from '@nestjs/swagger';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post('register')
-  async register(@Body() createUserDto: CreateUserDto): Promise<User> {
+  @Post('createInfo')
+  async createInfo(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.userService.createInfo(createUserDto);
   }
 
-  @Get('findAll')
+  @Get('readByAll')
   @ApiQuery({ name: 'name', required: false, description: '사용자 이름' })
   @ApiQuery({ name: 'email', required: false, description: '사용자 이메일' })
   @ApiQuery({
@@ -36,7 +36,7 @@ export class UserController {
     required: false,
     description: '최대 사용자 수 (기본값: 10)',
   })
-  async findAll(
+  async readByAll(
     @Query('name') name?: string,
     @Query('email') email?: string,
     @Query('is_active') is_active?: string,
@@ -55,12 +55,12 @@ export class UserController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<User> {
+  async readById(@Param('id') id: string): Promise<User> {
     return this.userService.readById(Number(id));
   }
 
   @Patch(':id')
-  async updateUser(
+  async updateInfo(
     @Param('id') id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
@@ -68,7 +68,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  async deleteUser(@Param('id') id: number): Promise<void> {
+  async deleteInfo(@Param('id') id: number): Promise<void> {
     await this.userService.deleteInfo(id);
   }
 }
