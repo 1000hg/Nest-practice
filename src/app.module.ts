@@ -21,7 +21,7 @@ import config from './config/index';
         username: configService.get('database.username'),
         password: configService.get('database.password'),
         database: configService.get('database.database'),
-        entities: [__dirname + '/modules/**/*{.ts,.js}'],
+        entities: [__dirname + '/modules/**/*.entity.{ts,js}'],
         synchronize: configService.get('database.synchronize'),
         logging: configService.get('database.logging'),
       }),
