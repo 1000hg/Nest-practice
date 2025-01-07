@@ -54,26 +54,26 @@ export class UserController {
     return this.userService.readByAll(filters, parsedLimit);
   }
 
-  @Get(':id')
-  async readById(@Param('id') id: string): Promise<User> {
+  @Get('readById')
+  async readById(@Query('id') id: Number): Promise<User> {
     return this.userService.readById(Number(id));
   }
 
-  @Get(':email')
-  async readByEmail(@Param('email') email: string): Promise<User> {
+  @Get('readByEmail')
+  async readByEmail(@Query('email') email: string): Promise<User> {
     return this.userService.readByEmail(email);
   }
 
-  @Patch(':id')
+  @Patch('updateInfo')
   async updateInfo(
-    @Param('id') id: number,
+    @Query('id') id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.userService.updateInfo(id, updateUserDto);
   }
 
-  @Delete(':id')
-  async deleteInfo(@Param('id') id: number): Promise<void> {
+  @Delete('deleteInfo')
+  async deleteInfo(@Query('id') id: number): Promise<void> {
     await this.userService.deleteInfo(id);
   }
 }
