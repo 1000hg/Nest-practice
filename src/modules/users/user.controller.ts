@@ -11,18 +11,20 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiQuery } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery } from '@nestjs/swagger';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('createInfo')
+  @ApiOperation({ summary: '유저 생성' })
   async createInfo(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.userService.createInfo(createUserDto);
   }
 
   @Get('readByAll')
+  @ApiOperation({ summary: '유저 전체 조회' })
   @ApiQuery({ name: 'name', required: false, description: '사용자 이름' })
   @ApiQuery({ name: 'email', required: false, description: '사용자 이메일' })
   @ApiQuery({
@@ -54,16 +56,19 @@ export class UserController {
   }
 
   @Get('readById')
+  @ApiOperation({ summary: 'id로 유저 조회' })
   async readById(@Query('id') id: Number): Promise<User> {
     return this.userService.readById(Number(id));
   }
 
   @Get('readByEmail')
+  @ApiOperation({ summary: '이메일로 유저 조회' })
   async readByEmail(@Query('email') email: string): Promise<User> {
     return this.userService.readByEmail(email);
   }
 
   @Patch('updateInfo')
+  @ApiOperation({ summary: '유저 수정' })
   async updateInfo(
     @Query('id') id: number,
     @Body() updateUserDto: UpdateUserDto,
@@ -72,6 +77,7 @@ export class UserController {
   }
 
   @Delete('deleteInfo')
+  @ApiOperation({ summary: '유저 삭제' })
   async deleteInfo(@Query('id') id: number): Promise<void> {
     await this.userService.deleteInfo(id);
   }
