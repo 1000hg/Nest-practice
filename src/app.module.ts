@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import databaseConfig from './config/database.config';
 import { UserModule } from 'modules/users/user.module';
 import * as path from 'path';
 import * as fs from 'fs';
 import { BackupModule } from 'backup/backup.module';
 import { AuthModule } from 'modules/auths/auth.module';
+import config from './config/index';
 
 /** 엔티티 동적 수집 */
 function collectEntities(): string[] {
@@ -36,7 +36,7 @@ function collectEntities(): string[] {
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [databaseConfig],
+      load: config,
       isGlobal: true,
     }),
 
