@@ -12,6 +12,7 @@ import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RefreshTokenGuard } from './guards/refresh-token.guard';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ExtractJwt } from 'passport-jwt';
 
 @Controller('auth')
 export class AuthController {
@@ -42,7 +43,9 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(RefreshTokenGuard)
   async refreshAccessToken(@Req() req: any) {
-    const { userId, refreshToken } = req.user;
+    const { userId } = req.user;
+    const refreshToken = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
+
     const accessToken = await this.authService.refreshAccessToken(
       userId,
       refreshToken,

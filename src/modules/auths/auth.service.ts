@@ -49,6 +49,7 @@ export class AuthService {
   ): Promise<string> {
     const storedRefreshToken = this.refreshTokens.get(userId);
 
+    console.log(storedRefreshToken, refreshToken);
     if (!storedRefreshToken || storedRefreshToken !== refreshToken) {
       throw new UnauthorizedException('유효하지 않은 Refresh Token입니다.');
     }
