@@ -36,7 +36,7 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  async logout(userId: Number) {
+  async logout(userId: number) {
     if (this.refreshTokens.has(userId)) {
       this.refreshTokens.delete(userId);
     }
@@ -44,7 +44,7 @@ export class AuthService {
   }
 
   async refreshAccessToken(
-    userId: Number,
+    userId: number,
     refreshToken: string,
   ): Promise<string> {
     const storedRefreshToken = this.refreshTokens.get(userId);
@@ -66,7 +66,7 @@ export class AuthService {
   }
 
   private async createAccessToken(
-    userId: Number,
+    userId: number,
     email: string,
   ): Promise<string> {
     const payload = { sub: userId, email };
@@ -77,7 +77,7 @@ export class AuthService {
   }
 
   private async createRefreshToken(
-    userId: Number,
+    userId: number,
     email: string,
   ): Promise<string> {
     const payload = { sub: userId, email };

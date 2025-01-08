@@ -57,8 +57,8 @@ export class UserController {
 
   @Get('readById')
   @ApiOperation({ summary: 'id로 유저 조회' })
-  async readById(@Query('id') id: Number): Promise<User> {
-    return this.userService.readById(Number(id));
+  async readById(@Query('id') id: number): Promise<User> {
+    return this.userService.readById(id);
   }
 
   @Get('readByEmail')
