@@ -14,7 +14,7 @@ export class RefreshToken {
   @PrimaryGeneratedColumn('increment', { type: 'bigint', unsigned: true })
   id: number;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'id' })
   user: User;
 
@@ -25,7 +25,7 @@ export class RefreshToken {
   token: string;
 
   @Column({ type: 'timestamp' })
-  expiration: Date;
+  expiration_at: Date;
 
   @CreateDateColumn()
   created_at: Date;
