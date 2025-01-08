@@ -4,6 +4,7 @@ import { UserService } from 'modules/users/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { TokenService } from 'modules/token/token.service';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly tokenService: TokenService,
   ) {}
 
   async login(loginDto: LoginDto) {
@@ -28,8 +30,14 @@ export class AuthService {
       throw new UnauthorizedException('이메일 또는 비밀번호가 잘못되었습니다.');
     }
 
-    const accessToken = await this.createAccessToken(user.id, user.email);
-    const refreshToken = await this.createRefreshToken(user.id, user.email);
+    const accessToken = await this.tokenService.createAccessToken(
+      user.id,
+      email,
+    );
+    const refreshToken = await this.tokenService.createRefreshToken(
+      user.id,
+      email,
+    );
 
     this.refreshTokens.set(user.id, refreshToken);
 
@@ -59,31 +67,9 @@ export class AuthService {
         secret: this.configService.get('JWT_REFRESH_SECRET'),
       });
 
-      return this.createAccessToken(payload.sub, payload.email);
+      return this.tokenService.createRefreshToken(payload.sub, payload.email);
     } catch (error) {
       throw new UnauthorizedException('유효하지 않은 Refresh Token입니다.');
     }
-  }
-
-  private async createAccessToken(
-    userId: number,
-    email: string,
-  ): Promise<string> {
-    const payload = { sub: userId, email };
-    return this.jwtService.signAsync(payload, {
-      secret: this.configService.get('JWT_ACCESS_SECRET'),
-      expiresIn: this.configService.get('JWT_ACCESS_EXPIRATION_TIME'),
-    });
-  }
-
-  private async createRefreshToken(
-    userId: number,
-    email: string,
-  ): Promise<string> {
-    const payload = { sub: userId, email };
-    return this.jwtService.signAsync(payload, {
-      secret: this.configService.get('JWT_REFRESH_SECRET'),
-      expiresIn: this.configService.get('JWT_REFRESH_EXPIRATION_TIME'),
-    });
   }
 }

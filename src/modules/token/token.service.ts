@@ -5,7 +5,7 @@ import { RefreshTokenRepository } from './refresh-token.repository';
 import * as ms from 'ms';
 
 @Injectable()
-export class RefreshTokenService {
+export class TokenService {
   constructor(
     private readonly refreshTokenRepository: RefreshTokenRepository,
     private readonly jwtService: JwtService,

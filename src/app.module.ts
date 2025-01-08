@@ -5,6 +5,7 @@ import { UserModule } from 'modules/users/user.module';
 import { BackupModule } from 'backup/backup.module';
 import { AuthModule } from 'modules/auths/auth.module';
 import config from './config/index';
+import { createLogger, format, transports } from 'winston';
 
 @Module({
   imports: [

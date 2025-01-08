@@ -15,16 +15,16 @@ export class RefreshToken {
   id: number;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'id' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
-  @Column({ type: 'bigint' })
+  @Column({ type: 'bigint', unsigned: true })
   user_id: number;
 
   @Column({ type: 'varchar', length: 255 })
   token: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'datetime', precision: 3 })
   expiration_at: Date;
 
   @CreateDateColumn()
