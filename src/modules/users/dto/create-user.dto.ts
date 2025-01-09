@@ -40,4 +40,18 @@ export class CreateUserDto {
   @IsOptional()
   @IsEnum(['user', 'admin'])
   role?: 'user' | 'admin';
+
+  @ApiProperty({
+    enum: ['local', 'social'],
+  })
+  @IsOptional()
+  @IsEnum(['local', 'social'])
+  login_type?: 'local' | 'social';
+
+  @ApiProperty({
+    enum: ['local', 'google'],
+  })
+  @IsOptional()
+  @IsEnum(['local', 'google'])
+  provider?: 'local' | 'google';
 }

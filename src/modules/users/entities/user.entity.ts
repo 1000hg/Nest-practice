@@ -34,6 +34,20 @@ export class User {
   })
   role: 'user' | 'admin';
 
+  @Column({
+    type: 'enum',
+    enum: ['local', 'social'],
+    default: 'local',
+  })
+  login_type: 'local' | 'social';
+
+  @Column({
+    type: 'enum',
+    enum: ['local', 'google'],
+    default: 'local',
+  })
+  provider: 'local' | 'google';
+
   @Column({ type: 'tinyint', width: 1, default: 1 })
   is_active: boolean;
 
