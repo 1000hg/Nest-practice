@@ -2,8 +2,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { UserService } from 'modules/users/user.service';
 import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 import { TokenService } from 'modules/token/token.service';
 import { RefreshTokenRepository } from 'modules/token/refresh-token.repository';
 
@@ -13,8 +11,6 @@ export class AuthService {
 
   constructor(
     private readonly userService: UserService,
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
     private readonly tokenService: TokenService,
     private readonly refreshTokenRepository: RefreshTokenRepository,
   ) {}
@@ -74,5 +70,16 @@ export class AuthService {
     }
 
     return this.tokenService.createAccessToken(user.id, user.email);
+  }
+
+  async googleLogin(user: any) {
+    if (!user) {
+      return 'No user from Google';
+    }
+
+    return {
+      message: 'User information from Google',
+      user,
+    };
   }
 }

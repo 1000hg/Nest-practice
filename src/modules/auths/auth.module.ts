@@ -7,6 +7,7 @@ import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
 import { TokenModule } from 'modules/token/token.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({
   imports: [
@@ -34,7 +35,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     UserModule,
     TokenModule,
   ],
-  providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],
+  providers: [
+    AuthService,
+    AccessTokenStrategy,
+    RefreshTokenStrategy,
+    GoogleStrategy,
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}
