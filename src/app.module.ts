@@ -5,7 +5,7 @@ import { UserModule } from 'modules/users/user.module';
 import { BackupModule } from 'backup/backup.module';
 import { AuthModule } from 'modules/auths/auth.module';
 import config from './config/index';
-import { createLogger, format, transports } from 'winston';
+import { FileLogger } from 'log/file-logger';
 
 @Module({
   imports: [
@@ -25,6 +25,7 @@ import { createLogger, format, transports } from 'winston';
         entities: [__dirname + '/modules/**/*.entity.{ts,js}'],
         synchronize: configService.get('database.synchronize'),
         logging: configService.get('database.logging'),
+        logger: new FileLogger(),
       }),
       inject: [ConfigService],
     }),
