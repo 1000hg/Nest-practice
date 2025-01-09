@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { BackupService } from 'backup/backup.service';
-import { RefreshTokenRepository } from 'modules/token/refresh-token.repository';
+import { RefreshTokenRepository } from 'modules/tokens/refresh-token.repository';
 
 @Injectable()
 export default class CronService {

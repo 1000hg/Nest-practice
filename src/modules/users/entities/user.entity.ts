@@ -12,7 +12,7 @@ export class User {
   @PrimaryGeneratedColumn('increment', { type: 'bigint', unsigned: true })
   id: number;
 
-  @Column({ type: 'varchar', length: 255, unique: true })
+  @Column({ type: 'varchar', length: 255 })
   email: string;
 
   @Column({ type: 'varchar', length: 255 })
@@ -50,6 +50,9 @@ export class User {
 
   @Column({ type: 'tinyint', width: 1, default: 1 })
   is_active: boolean;
+
+  @Column({ type: 'tinyint', width: 1, default: 0 })
+  is_email_verified: boolean;
 
   @CreateDateColumn()
   created_at: Date;

@@ -4,7 +4,7 @@ import { AuthController } from './auth.controller';
 import { UserModule } from 'modules/users/user.module';
 import { AccessTokenStrategy } from './strategies/accessToken.strategy';
 import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
-import { TokenModule } from 'modules/token/token.module';
+import { TokenModule } from 'modules/tokens/token.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GoogleStrategy } from './strategies/google.strategy';

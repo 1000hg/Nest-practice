@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -53,6 +54,15 @@ export class AuthController {
       refreshToken,
     );
     return { accessToken };
+  }
+
+  @Get('verify-email')
+  async verifyEmail(
+    @Query('email') email: string,
+    @Query('token') token: string,
+  ): Promise<string> {
+    await this.authService.verifyEmail(email, token);
+    return '이메일 인증이 완료되었습니다.';
   }
 
   @Get('google')

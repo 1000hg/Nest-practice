@@ -9,26 +9,40 @@ import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { MailService } from 'mail/mail.service';
+import { randomBytes } from 'crypto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly mailService: MailService,
   ) {}
 
   async createInfo(createUserDto: CreateUserDto): Promise<User> {
-    const { email, password, name, nickname, phone_number, role } =
-      createUserDto;
+    const {
+      email,
+      password,
+      name,
+      nickname,
+      phone_number,
+      role,
+      login_type,
+      provider,
+    } = createUserDto;
 
     const existingUser = await this.userRepository.findOne({
-      where: [{ email }, { nickname }, { phone_number }],
+      where: [{ email, provider }, { nickname }, { phone_number }],
     });
     if (existingUser) {
       throw new ConflictException('이메일, 닉네임, 전화번호 중복');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    const verificationToken = randomBytes(32).toString('hex');
+    await this.mailService.sendVerificationEmail(email, verificationToken);
 
     const user = this.userRepository.create({
       email,
@@ -37,6 +51,9 @@ export class UserService {
       nickname,
       phone_number,
       role,
+      login_type,
+      provider,
+      is_email_verified: false,
       is_active: true,
     });
 
@@ -69,7 +86,12 @@ export class UserService {
   }
 
   async readByEmail(email: string): Promise<User> {
-    return this.userRepository.findOne({ where: { email } });
+    return this.userRepository.findOne({
+      where: {
+        email,
+        provider: 'local',
+      },
+    });
   }
 
   async updateInfo(id: number, updateUserDto: UpdateUserDto): Promise<User> {

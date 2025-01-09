@@ -2,8 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { UserService } from 'modules/users/user.service';
 import * as bcrypt from 'bcrypt';
-import { TokenService } from 'modules/token/token.service';
-import { RefreshTokenRepository } from 'modules/token/refresh-token.repository';
+import { TokenService } from 'modules/tokens/token.service';
+import { RefreshTokenRepository } from 'modules/tokens/refresh-token.repository';
 
 @Injectable()
 export class AuthService {
@@ -70,6 +70,14 @@ export class AuthService {
     }
 
     return this.tokenService.createAccessToken(user.id, user.email);
+  }
+
+  async verifyEmail(email: string, token: string): Promise<void> {
+    const user = this.userService.readByEmail(email);
+
+    if (!user) {
+      throw new Error('사용자를 찾을 수 없습니다.');
+    }
   }
 
   async googleLogin(user: any) {
