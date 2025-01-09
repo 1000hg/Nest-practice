@@ -6,6 +6,7 @@ import { BackupModule } from 'backup/backup.module';
 import { AuthModule } from 'modules/auths/auth.module';
 import config from './config/index';
 import { FileLogger } from 'log/file-logger';
+import { CronModule } from 'cron/cron.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { FileLogger } from 'log/file-logger';
     UserModule,
     BackupModule,
     AuthModule,
+    CronModule,
   ],
 })
 export class AppModule {}

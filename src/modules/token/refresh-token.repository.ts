@@ -15,6 +15,8 @@ export class RefreshTokenRepository {
     token: string,
     expiration_at: Date,
   ): Promise<RefreshToken> {
+    await this.repository.delete({ user_id });
+
     const refreshToken = this.repository.create({
       user_id,
       token,
@@ -24,8 +26,8 @@ export class RefreshTokenRepository {
     return this.repository.save(refreshToken);
   }
 
-  async findToken(user_id: number, token: string): Promise<RefreshToken> {
-    return this.repository.findOne({ where: { user_id, token } });
+  async readTokenByUserId(user_id: number): Promise<RefreshToken> {
+    return this.repository.findOne({ where: { user_id } });
   }
 
   async deleteToken(user_id: number): Promise<void> {
@@ -38,7 +40,7 @@ export class RefreshTokenRepository {
       .createQueryBuilder()
       .delete()
       .from(RefreshToken)
-      .where('expires_at < :now', { now })
+      .where('expiration_at < :now', { now })
       .execute();
   }
 }

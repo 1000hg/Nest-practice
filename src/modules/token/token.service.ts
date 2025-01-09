@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { RefreshTokenRepository } from './refresh-token.repository';
 import * as ms from 'ms';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class TokenService {
@@ -41,5 +42,19 @@ export class TokenService {
     );
 
     return refreshToken;
+  }
+
+  async validateRefreshToken(user_id: number, token: string): Promise<boolean> {
+    const storedToken =
+      await this.refreshTokenRepository.readTokenByUserId(user_id);
+    if (!storedToken) {
+      return false;
+    }
+
+    return storedToken.token === token;
+  }
+
+  async deleteRefreshToken(user_id: number): Promise<void> {
+    await this.refreshTokenRepository.deleteToken(user_id);
   }
 }

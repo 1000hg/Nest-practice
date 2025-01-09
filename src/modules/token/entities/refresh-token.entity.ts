@@ -18,7 +18,7 @@ export class RefreshToken {
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
-  @Column({ type: 'bigint', unsigned: true })
+  @Column({ type: 'bigint', unsigned: true, unique: true })
   user_id: number;
 
   @Column({ type: 'varchar', length: 255 })

@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { TokenService } from 'modules/token/token.service';
+import { RefreshTokenRepository } from 'modules/token/refresh-token.repository';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +16,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly tokenService: TokenService,
+    private readonly refreshTokenRepository: RefreshTokenRepository,
   ) {}
 
   async login(loginDto: LoginDto) {
@@ -46,6 +48,7 @@ export class AuthService {
 
   async logout(userId: number) {
     if (this.refreshTokens.has(userId)) {
+      this.refreshTokenRepository.deleteToken(userId);
       this.refreshTokens.delete(userId);
     }
     return { message: '로그아웃 성공' };
@@ -55,21 +58,21 @@ export class AuthService {
     userId: number,
     refreshToken: string,
   ): Promise<string> {
-    const storedRefreshToken = this.refreshTokens.get(userId);
+    const isValid = await this.tokenService.validateRefreshToken(
+      userId,
+      refreshToken,
+    );
 
-    console.log(storedRefreshToken, refreshToken);
-    if (!storedRefreshToken || storedRefreshToken !== refreshToken) {
+    if (!isValid) {
       throw new UnauthorizedException('유효하지 않은 Refresh Token입니다.');
     }
 
-    try {
-      const payload = this.jwtService.verify(refreshToken, {
-        secret: this.configService.get('JWT_REFRESH_SECRET'),
-      });
+    const user = await this.userService.readById(userId);
 
-      return this.tokenService.createRefreshToken(payload.sub, payload.email);
-    } catch (error) {
-      throw new UnauthorizedException('유효하지 않은 Refresh Token입니다.');
+    if (!user) {
+      throw new UnauthorizedException('사용자를 찾을 수 없습니다.');
     }
+
+    return this.tokenService.createAccessToken(user.id, user.email);
   }
 }

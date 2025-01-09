@@ -32,6 +32,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
   ],
   providers: [TokenService, RefreshTokenRepository],
-  exports: [TokenService],
+  exports: [TokenService, RefreshTokenRepository],
 })
 export class TokenModule {}

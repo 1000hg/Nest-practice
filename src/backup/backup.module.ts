@@ -8,5 +8,6 @@ import { DataSource } from 'typeorm';
   imports: [TypeOrmModule.forFeature([DataSource])],
   providers: [BackupService],
   controllers: [BackupController],
+  exports: [BackupService],
 })
 export class BackupModule {}
