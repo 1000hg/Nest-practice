@@ -9,15 +9,12 @@ import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { MailService } from 'mail/mail.service';
-import { randomBytes } from 'crypto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    private readonly mailService: MailService,
   ) {}
 
   async createInfo(createUserDto: CreateUserDto): Promise<User> {
@@ -30,6 +27,7 @@ export class UserService {
       role,
       login_type,
       provider,
+      is_email_verified,
     } = createUserDto;
 
     const existingUser = await this.userRepository.findOne({
@@ -41,10 +39,7 @@ export class UserService {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const verificationToken = randomBytes(32).toString('hex');
-    await this.mailService.sendVerificationEmail(email, verificationToken);
-
-    const user = this.userRepository.create({
+    const user = await this.userRepository.create({
       email,
       password: hashedPassword,
       name,
@@ -53,8 +48,7 @@ export class UserService {
       role,
       login_type,
       provider,
-      is_email_verified: false,
-      is_active: true,
+      is_email_verified,
     });
 
     return this.userRepository.save(user);
@@ -86,12 +80,18 @@ export class UserService {
   }
 
   async readByEmail(email: string): Promise<User> {
-    return this.userRepository.findOne({
+    let user = this.userRepository.findOne({
       where: {
         email,
         provider: 'local',
       },
     });
+
+    if (!user) {
+      throw new Error('사용자를 찾을 수 없습니다.');
+    }
+
+    return user;
   }
 
   async updateInfo(id: number, updateUserDto: UpdateUserDto): Promise<User> {

@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { User } from 'modules/users/entities/user.entity';
 import * as nodemailer from 'nodemailer';
 
 @Injectable()
 export class MailService {
   private transporter;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly jwtService: JwtService,
+  ) {
     this.transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -17,13 +22,19 @@ export class MailService {
   }
 
   /** 이메일 인증 메일 발송 */
-  async sendVerificationEmail(email: string, token: string): Promise<void> {
+  async sendVerificationEmail(user: User): Promise<void> {
+    const payload = { sub: user.id, email: user.email };
+    const token = await this.jwtService.signAsync(payload, {
+      secret: this.configService.get('JWT_MAIL_SECRET'),
+      expiresIn: this.configService.get('JWT_MAIL_EXPIRATION_TIME'),
+    });
+
     const verificationUrl =
       this.configService.get('SERVER_URL') +
-      `/auth/verify-email?email=${email}&token=${token}`;
+      `/auth/res-verify-email?email=${user.email}&token=${token}`;
     const mailOptions = {
       from: this.configService.get('MAIL_USER'),
-      to: email,
+      to: user.email,
       subject: '이메일 인증 요청',
       html: `
           <h1>이메일 인증</h1>

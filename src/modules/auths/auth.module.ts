@@ -8,6 +8,7 @@ import { TokenModule } from 'modules/tokens/token.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { MailModule } from 'mail/mail.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
     }),
     UserModule,
     TokenModule,
+    MailModule,
   ],
   providers: [
     AuthService,

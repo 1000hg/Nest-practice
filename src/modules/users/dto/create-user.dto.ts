@@ -4,6 +4,7 @@ import {
   IsOptional,
   IsEnum,
   IsString,
+  IsBoolean,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -54,4 +55,9 @@ export class CreateUserDto {
   @IsOptional()
   @IsEnum(['local', 'google'])
   provider?: 'local' | 'google';
+
+  @ApiProperty({ default: false })
+  @IsBoolean()
+  @IsOptional()
+  is_email_verified: boolean;
 }

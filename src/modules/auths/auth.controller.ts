@@ -56,12 +56,17 @@ export class AuthController {
     return { accessToken };
   }
 
-  @Get('verify-email')
-  async verifyEmail(
-    @Query('email') email: string,
-    @Query('token') token: string,
-  ): Promise<string> {
-    await this.authService.verifyEmail(email, token);
+  @Get('req-verify-email')
+  @ApiOperation({ summary: '이메일 인증 요청' })
+  async reqVerifyEmail(@Query('email') email: string): Promise<void> {
+    await this.authService.reqVerifyEmail(email);
+  }
+
+  @Get('res-verify-email')
+  @ApiOperation({ summary: '이메일 인증 응답' })
+  @UseGuards(AuthGuard('jwt-mail'))
+  async verifyEmail(@Query('email') email: string): Promise<string> {
+    await this.authService.resVerifyEmail(email);
     return '이메일 인증이 완료되었습니다.';
   }
 

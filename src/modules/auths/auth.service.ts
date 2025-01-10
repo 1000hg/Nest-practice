@@ -4,6 +4,8 @@ import { UserService } from 'modules/users/user.service';
 import * as bcrypt from 'bcrypt';
 import { TokenService } from 'modules/tokens/token.service';
 import { RefreshTokenRepository } from 'modules/tokens/refresh-token.repository';
+import { UpdateUserDto } from 'modules/users/dto/update-user.dto';
+import { MailService } from 'mail/mail.service';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +15,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly tokenService: TokenService,
     private readonly refreshTokenRepository: RefreshTokenRepository,
+    private readonly mailService: MailService,
   ) {}
 
   async login(loginDto: LoginDto) {
@@ -72,12 +75,19 @@ export class AuthService {
     return this.tokenService.createAccessToken(user.id, user.email);
   }
 
-  async verifyEmail(email: string, token: string): Promise<void> {
-    const user = this.userService.readByEmail(email);
+  async reqVerifyEmail(email: string): Promise<void> {
+    const user = await this.userService.readByEmail(email);
 
-    if (!user) {
-      throw new Error('사용자를 찾을 수 없습니다.');
-    }
+    await this.mailService.sendVerificationEmail(user);
+  }
+
+  async resVerifyEmail(email: string): Promise<void> {
+    const user = await this.userService.readByEmail(email);
+
+    let updateUserDto: UpdateUserDto = new UpdateUserDto();
+    updateUserDto.is_email_verified = true;
+
+    this.userService.updateInfo(user.id, updateUserDto);
   }
 
   async googleLogin(user: any) {
