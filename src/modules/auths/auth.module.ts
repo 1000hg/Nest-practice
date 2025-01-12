@@ -4,12 +4,19 @@ import { AuthController } from './auth.controller';
 import { UserModule } from 'modules/users/user.module';
 import { AccessTokenStrategy } from './strategies/accessToken.strategy';
 import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
-import { TokenModule } from 'modules/token/token.module';
+import { TokenModule } from 'modules/tokens/token.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { GoogleStrategy } from './strategies/google.strategy';
+import { MailModule } from 'mail/mail.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from 'modules/users/entities/user.entity';
+import { UtilModule } from 'util/utill.module';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([User]),
+
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -33,8 +40,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     UserModule,
     TokenModule,
+    MailModule,
+    UtilModule,
   ],
-  providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],
+  providers: [
+    AuthService,
+    AccessTokenStrategy,
+    RefreshTokenStrategy,
+    GoogleStrategy,
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}

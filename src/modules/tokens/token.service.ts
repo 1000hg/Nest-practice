@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { RefreshTokenRepository } from './refresh-token.repository';
 import * as ms from 'ms';
-import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class TokenService {

@@ -18,26 +18,35 @@ export class UserService {
   ) {}
 
   async createInfo(createUserDto: CreateUserDto): Promise<User> {
-    const { email, password, name, nickname, phone_number, role } =
-      createUserDto;
+    const {
+      email,
+      password,
+      name,
+      nickname,
+      role,
+      login_type,
+      provider,
+      is_email_verified,
+    } = createUserDto;
 
     const existingUser = await this.userRepository.findOne({
-      where: [{ email }, { nickname }, { phone_number }],
+      where: [{ email, provider }, { nickname }],
     });
     if (existingUser) {
-      throw new ConflictException('이메일, 닉네임, 전화번호 중복');
+      throw new ConflictException('이메일, 닉네임 중복');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = this.userRepository.create({
+    const user = await this.userRepository.create({
       email,
       password: hashedPassword,
       name,
       nickname,
-      phone_number,
       role,
-      is_active: true,
+      login_type,
+      provider,
+      is_email_verified,
     });
 
     return this.userRepository.save(user);
@@ -68,8 +77,22 @@ export class UserService {
     return this.userRepository.findOneBy({ id });
   }
 
-  async readByEmail(email: string): Promise<User> {
-    return this.userRepository.findOne({ where: { email } });
+  async readByEmail(
+    email: string,
+    provider: 'local' | 'google' = 'local',
+  ): Promise<User> {
+    let user = this.userRepository.findOne({
+      where: {
+        email,
+        provider,
+      },
+    });
+
+    if (!user) {
+      throw new Error('사용자를 찾을 수 없습니다.');
+    }
+
+    return user;
   }
 
   async updateInfo(id: number, updateUserDto: UpdateUserDto): Promise<User> {

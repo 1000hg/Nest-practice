@@ -12,7 +12,7 @@ export class User {
   @PrimaryGeneratedColumn('increment', { type: 'bigint', unsigned: true })
   id: number;
 
-  @Column({ type: 'varchar', length: 255, unique: true })
+  @Column({ type: 'varchar', length: 255 })
   email: string;
 
   @Column({ type: 'varchar', length: 255 })
@@ -24,9 +24,6 @@ export class User {
   @Column({ type: 'varchar', length: 20, nullable: true, unique: true })
   nickname?: string;
 
-  @Column({ type: 'varchar', length: 20, nullable: true, unique: true })
-  phone_number?: string;
-
   @Column({
     type: 'enum',
     enum: ['user', 'admin'],
@@ -34,8 +31,25 @@ export class User {
   })
   role: 'user' | 'admin';
 
+  @Column({
+    type: 'enum',
+    enum: ['local', 'social'],
+    default: 'local',
+  })
+  login_type: 'local' | 'social';
+
+  @Column({
+    type: 'enum',
+    enum: ['local', 'google'],
+    default: 'local',
+  })
+  provider: 'local' | 'google';
+
   @Column({ type: 'tinyint', width: 1, default: 1 })
   is_active: boolean;
+
+  @Column({ type: 'tinyint', width: 1, default: 0 })
+  is_email_verified: boolean;
 
   @CreateDateColumn()
   created_at: Date;

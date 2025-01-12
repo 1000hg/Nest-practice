@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -13,6 +15,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RefreshTokenGuard } from './guards/refresh-token.guard';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { ExtractJwt } from 'passport-jwt';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -51,5 +54,29 @@ export class AuthController {
       refreshToken,
     );
     return { accessToken };
+  }
+
+  @Get('req-verify-email')
+  @ApiOperation({ summary: '이메일 인증 요청' })
+  async reqVerifyEmail(@Query('email') email: string): Promise<void> {
+    await this.authService.reqVerifyEmail(email);
+  }
+
+  @Get('res-verify-email')
+  @ApiOperation({ summary: '이메일 인증 응답' })
+  @UseGuards(AuthGuard('jwt-mail'))
+  async verifyEmail(@Query('email') email: string): Promise<string> {
+    await this.authService.resVerifyEmail(email);
+    return '이메일 인증이 완료되었습니다.';
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth() {}
+
+  @Get('google/redirect')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthRedirect(@Req() req) {
+    return this.authService.googleLogin(req.user);
   }
 }
