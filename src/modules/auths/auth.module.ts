@@ -9,9 +9,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { MailModule } from 'mail/mail.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from 'modules/users/entities/user.entity';
+import { UtilModule } from 'util/utill.module';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([User]),
+
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -36,6 +41,7 @@ import { MailModule } from 'mail/mail.module';
     UserModule,
     TokenModule,
     MailModule,
+    UtilModule,
   ],
   providers: [
     AuthService,

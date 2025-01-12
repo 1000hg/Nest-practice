@@ -6,16 +6,24 @@ import { TokenService } from 'modules/tokens/token.service';
 import { RefreshTokenRepository } from 'modules/tokens/refresh-token.repository';
 import { UpdateUserDto } from 'modules/users/dto/update-user.dto';
 import { MailService } from 'mail/mail.service';
+import { CreateUserDto } from 'modules/users/dto/create-user.dto';
+import { Repository } from 'typeorm';
+import { User } from 'modules/users/entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { RandomUtil } from 'util/random.util';
+import { UserUtil } from 'util/user.util';
 
 @Injectable()
 export class AuthService {
-  private readonly refreshTokens: Map<Number, string> = new Map();
-
   constructor(
     private readonly userService: UserService,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
     private readonly tokenService: TokenService,
     private readonly refreshTokenRepository: RefreshTokenRepository,
     private readonly mailService: MailService,
+    private readonly randomUtil: RandomUtil,
+    private readonly userUtil: UserUtil,
   ) {}
 
   async login(loginDto: LoginDto) {
@@ -40,15 +48,12 @@ export class AuthService {
       email,
     );
 
-    this.refreshTokens.set(user.id, refreshToken);
-
     return { accessToken, refreshToken };
   }
 
   async logout(userId: number) {
-    if (this.refreshTokens.has(userId)) {
+    if (this.userService.readById(userId)) {
       this.refreshTokenRepository.deleteToken(userId);
-      this.refreshTokens.delete(userId);
     }
     return { message: '로그아웃 성공' };
   }
@@ -90,14 +95,40 @@ export class AuthService {
     this.userService.updateInfo(user.id, updateUserDto);
   }
 
-  async googleLogin(user: any) {
+  async googleLogin(userInfo: any) {
+    let user = await this.userRepository.findOne({
+      where: {
+        email: userInfo.email,
+        provider: 'google',
+      },
+    });
+
     if (!user) {
-      return 'No user from Google';
+      let createUserDto = new CreateUserDto();
+      createUserDto.email = userInfo.email;
+      createUserDto.password = this.randomUtil.GenerateRandomValue(15);
+      createUserDto.name = userInfo.name;
+      do {
+        createUserDto.nickname = this.randomUtil.GenerateRandomValue(10);
+      } while (await this.userUtil.isNicknameTaken(createUserDto.nickname));
+
+      createUserDto.role = 'user';
+      createUserDto.login_type = 'social';
+      createUserDto.provider = 'google';
+      createUserDto.is_email_verified = true;
+
+      user = await this.userService.createInfo(createUserDto);
     }
 
-    return {
-      message: 'User information from Google',
-      user,
-    };
+    const accessToken = await this.tokenService.createAccessToken(
+      user.id,
+      user.email,
+    );
+    const refreshToken = await this.tokenService.createRefreshToken(
+      user.id,
+      user.email,
+    );
+
+    return { accessToken, refreshToken };
   }
 }

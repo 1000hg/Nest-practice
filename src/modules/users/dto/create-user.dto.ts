@@ -29,11 +29,6 @@ export class CreateUserDto {
   @IsString()
   nickname?: string;
 
-  @ApiProperty({ required: false })
-  @IsOptional()
-  @IsString()
-  phone_number?: string;
-
   @ApiProperty({
     enum: ['user', 'admin'],
     required: false,

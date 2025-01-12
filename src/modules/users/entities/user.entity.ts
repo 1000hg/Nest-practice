@@ -24,9 +24,6 @@ export class User {
   @Column({ type: 'varchar', length: 20, nullable: true, unique: true })
   nickname?: string;
 
-  @Column({ type: 'varchar', length: 20, nullable: true, unique: true })
-  phone_number?: string;
-
   @Column({
     type: 'enum',
     enum: ['user', 'admin'],

@@ -23,7 +23,6 @@ export class UserService {
       password,
       name,
       nickname,
-      phone_number,
       role,
       login_type,
       provider,
@@ -31,10 +30,10 @@ export class UserService {
     } = createUserDto;
 
     const existingUser = await this.userRepository.findOne({
-      where: [{ email, provider }, { nickname }, { phone_number }],
+      where: [{ email, provider }, { nickname }],
     });
     if (existingUser) {
-      throw new ConflictException('이메일, 닉네임, 전화번호 중복');
+      throw new ConflictException('이메일, 닉네임 중복');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -44,7 +43,6 @@ export class UserService {
       password: hashedPassword,
       name,
       nickname,
-      phone_number,
       role,
       login_type,
       provider,
@@ -79,11 +77,14 @@ export class UserService {
     return this.userRepository.findOneBy({ id });
   }
 
-  async readByEmail(email: string): Promise<User> {
+  async readByEmail(
+    email: string,
+    provider: 'local' | 'google' = 'local',
+  ): Promise<User> {
     let user = this.userRepository.findOne({
       where: {
         email,
-        provider: 'local',
+        provider,
       },
     });
 

@@ -7,11 +7,6 @@ export class UpdateUserDto {
   @IsOptional()
   nickname?: string;
 
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  phone_number?: string;
-
   @ApiProperty({
     enum: ['user', 'admin'],
     required: false,
