@@ -3,14 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Simple App</title>
     <link rel="stylesheet" href="css/style.css" />
-    <!-- CSS 파일 포함 -->
+    <link rel="stylesheet" href="css/common.css" />
+    <title>메인 페이지</title>
   </head>
   <body>
-    <h1>Welcome to my simple app!</h1>
-    <p>This is a simple page served by NestJS</p>
+    <div id="top" class="flexBoth">
+      <div>
+        <img src="./img/common/logo.png" alt="" id="logo" />
+      </div>
+
+      <div class="dropdown" id="category">
+        <div id="categoryBtn" class="dropdown-btn flexBoth">
+          <div>전체보기</div>
+          <div style="margin-left: 5px">(1,300)</div>
+        </div>
+        <div class="dropdown-menu">
+          <a href="#option1">Option 1</a>
+          <a href="#option2">Option 2</a>
+          <a href="#option3">Option 3</a>
+        </div>
+      </div>
+
+      <div class="flexBoth" style="border: 1px solid #ccc; border-radius: 5px">
+        <input type="text" class="input-text" style="width: 500px" />
+        <img
+          src="./img/common/magnifying-glass.png"
+          alt=""
+          style="width: 25px; height: 25px; margin-right: 10px"
+        />
+      </div>
+
+      <div class="dropdown" id="sort" style="width: 100px">
+        <div id="sortBtn" class="dropdown-btn flexBoth">
+          <div>인기순</div>
+        </div>
+        <div class="dropdown-menu">
+          <a href="#option1">인기순</a>
+          <a href="#option2">최신순</a>
+        </div>
+      </div>
+
+      <div class="logged-out">
+        <button id="login-btn" class="button-default">로그인</button>
+        <button id="login-btn" class="button-default">회원가입</button>
+      </div>
+
+      <!-- <div class="logged-in flexBoth" style="gap: 20px">
+        <span>Welcome, User!</span>
+        <img
+          src="./img/common/mypage.png"
+          alt=""
+          style="width: 30px; height: 30px"
+        />
+        <button id="logout-btn" class="button-default">로그아웃</button>
+      </div> -->
+    </div>
+    <div id="content"></div>
+
     <script src="js/script.js"></script>
-    <!-- JS 파일 포함 -->
   </body>
 </html>

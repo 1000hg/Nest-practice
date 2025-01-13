@@ -1,2 +1,23 @@
-console.log('Hello from script.js!');
-document.querySelector('h1').style.color = 'blue'; // 제목 색상 변경
+const category = document.getElementById('category');
+const categoryBtn = document.getElementById('categoryBtn');
+
+categoryBtn.addEventListener('click', () => {
+  category.classList.toggle('show');
+});
+
+const sort = document.getElementById('sort');
+const sortBtn = document.getElementById('sortBtn');
+
+sortBtn.addEventListener('click', () => {
+  sort.classList.toggle('show');
+});
+
+window.addEventListener('click', (event) => {
+  if (!category.contains(event.target)) {
+    category.classList.remove('show');
+  }
+
+  if (!sort.contains(event.target)) {
+    sort.classList.remove('show');
+  }
+});

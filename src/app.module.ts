@@ -9,6 +9,7 @@ import { FileLogger } from 'log/file-logger';
 import { CronModule } from 'cron/cron.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { FrontModule } from 'front/front.module';
 
 @Module({
   imports: [
@@ -33,11 +34,7 @@ import { join } from 'path';
       inject: [ConfigService],
     }),
 
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),
-      serveRoot: '/',
-    }),
-
+    FrontModule,
     UserModule,
     BackupModule,
     AuthModule,
