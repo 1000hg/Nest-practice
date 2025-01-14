@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Post {
+export class Board {
   @PrimaryGeneratedColumn('increment', { type: 'bigint', unsigned: true })
   id: number;
 
@@ -29,7 +29,7 @@ export class Post {
   description: string;
 
   @Column({ type: 'varchar', length: 255 })
-  imageUrl: string;
+  image_url: string;
 
   @Column({ type: 'int', default: 0 })
   like_cnt: number;
