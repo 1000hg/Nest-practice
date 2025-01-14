@@ -7,6 +7,9 @@ import { AuthModule } from 'modules/auths/auth.module';
 import config from './config/index';
 import { FileLogger } from 'log/file-logger';
 import { CronModule } from 'cron/cron.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { FrontModule } from 'front/front.module';
 
 @Module({
   imports: [
@@ -31,6 +34,7 @@ import { CronModule } from 'cron/cron.module';
       inject: [ConfigService],
     }),
 
+    FrontModule,
     UserModule,
     BackupModule,
     AuthModule,
