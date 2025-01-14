@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google 로그인</title>
+  </head>
+  <body>
+    <script>
+      if (window.opener) {
+        window.opener.postMessage(
+          {
+            accessToken: '{{ accessToken }}',
+            refreshToken: '{{ refreshToken }}',
+          },
+          window.opener.location.origin,
+        );
+        window.close();
+      }
+    </script>
+  </body>
+</html>

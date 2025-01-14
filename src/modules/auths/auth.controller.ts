@@ -7,6 +7,7 @@ import {
   Post,
   Query,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -16,6 +17,8 @@ import { RefreshTokenGuard } from './guards/refresh-token.guard';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { ExtractJwt } from 'passport-jwt';
 import { AuthGuard } from '@nestjs/passport';
+import { join } from 'path';
+import * as fs from 'fs';
 
 @Controller('auth')
 export class AuthController {
@@ -37,7 +40,8 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   async logout(@Req() req: any) {
     const userId = req.user.userId;
-    return this.authService.logout(userId);
+    await this.authService.logout(userId);
+    return { message: 'Logout successful' };
   }
 
   @Post('refresh')
@@ -76,7 +80,26 @@ export class AuthController {
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
-  async googleAuthRedirect(@Req() req) {
-    return this.authService.googleLogin(req.user);
+  async googleAuthRedirect(@Req() req, @Res() res) {
+    const tokens = await this.authService.googleLogin(req.user);
+    const htmlFilePath = join(
+      __dirname,
+      '../',
+      '../',
+      '../',
+      'public',
+      'redirect',
+      'google-redirect.html',
+    );
+
+    let htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
+
+    htmlContent = htmlContent.replace('{{ accessToken }}', tokens.accessToken);
+    htmlContent = htmlContent.replace(
+      '{{ refreshToken }}',
+      tokens.refreshToken,
+    );
+
+    res.send(htmlContent);
   }
 }

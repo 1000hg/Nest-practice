@@ -3,6 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'self' https://apis.google.com https://www.gstatic.com;"
+    />
+
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/common.css" />
     <title>메인 페이지</title>
@@ -44,22 +49,28 @@
         </div>
       </div>
 
-      <div class="logged-out">
+      <div class="logged-out" id="logged-out" style="display: flex; gap: 10px">
         <button id="login-btn" class="button-default">로그인</button>
         <button id="signup-btn" class="button-default">회원가입</button>
       </div>
 
-      <!-- <div class="logged-in flexBoth" style="gap: 20px">
-        <span>Welcome, User!</span>
-        <img
-          src="./img/mypage.png"
-          alt=""
-          style="width: 30px; height: 30px"
-        />
+      <div
+        class="logged-in flexBoth"
+        id="logged-in"
+        style="gap: 20px; display: none"
+      >
+        <div class="flexBoth">
+          <img
+            src="./img/mypage.png"
+            alt=""
+            style="width: 30px; height: 30px"
+          />
+        </div>
         <button id="logout-btn" class="button-default">로그아웃</button>
-      </div> -->
+      </div>
     </div>
-    <div class="flexBoth">
+
+    <div class="flexBoth" style="margin-top: 50px">
       <div id="content" style="width: 1900px">
         <div class="img-container">
           <img
@@ -162,7 +173,8 @@
           <img
             src="./img/google.png"
             alt=""
-            style="width: 30px; height: 30px"
+            style="width: 30px; height: 30px; cursor: pointer"
+            id="googleLoginBtn"
           />
         </div>
       </div>
@@ -182,7 +194,7 @@
             name="email"
             class="modal-input"
             required
-          /><br /><br />
+          /><br />
           <div class="flex" style="justify-content: start; width: 85%">
             <label for="password">비밀번호</label>
           </div>
@@ -219,6 +231,7 @@
       </div>
     </div>
 
-    <script src="js/script.js"></script>
+    <script type="module" src="js/script.js"></script>
+    <script type="module" src="js/server.js"></script>
   </body>
 </html>

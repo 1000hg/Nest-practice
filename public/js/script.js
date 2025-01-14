@@ -1,3 +1,4 @@
+//카테고리
 const category = document.getElementById('category');
 const categoryBtn = document.getElementById('categoryBtn');
 
@@ -5,6 +6,7 @@ categoryBtn.addEventListener('click', () => {
   category.classList.toggle('show');
 });
 
+//정렬렬
 const sort = document.getElementById('sort');
 const sortBtn = document.getElementById('sortBtn');
 
@@ -12,6 +14,7 @@ sortBtn.addEventListener('click', () => {
   sort.classList.toggle('show');
 });
 
+//로그인 모달달
 const loginModal = document.getElementById('loginModal');
 const loginOpenBtn = document.getElementById('login-btn');
 const loginCloseBtn = document.getElementById('login-close');
@@ -24,6 +27,7 @@ loginCloseBtn.addEventListener('click', function () {
   loginModal.style.display = 'none';
 });
 
+//회원가입 모달
 const signUpModal = document.getElementById('signUpModal');
 const signUpOpenBtn = document.getElementById('signup-btn');
 const signUpCloseBtn = document.getElementById('signup-close');
