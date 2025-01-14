@@ -75,10 +75,12 @@ export class AuthController {
   }
 
   @Get('google')
+  @ApiOperation({ summary: '구글 로그인' })
   @UseGuards(AuthGuard('google'))
   async googleAuth() {}
 
   @Get('google/redirect')
+  @ApiOperation({ summary: '구글 로그인 리다이렉트' })
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res) {
     const tokens = await this.authService.googleLogin(req.user);
