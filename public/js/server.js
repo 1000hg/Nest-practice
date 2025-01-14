@@ -1,5 +1,3 @@
-import { getUserInfo } from './util.js';
-
 function Login() {
   let loginForm = document.getElementById('loginForm');
 
