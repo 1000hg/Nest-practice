@@ -11,13 +11,13 @@ export class FileService {
     try {
       await fs.access(uploadDir);
     } catch (err) {
-      await fs.mkdir(uploadDir);
+      await fs.mkdir(uploadDir, { recursive: true });
     }
 
     const fileName = `${Date.now()}_${file.originalname}`;
     const filePath = join(uploadDir, fileName);
 
-    await sharp(file.buffer).jpeg({ quality: 80 }).toFile(filePath);
+    await sharp(file.buffer).png({ quality: 80 }).toFile(filePath);
 
     return fileName;
   }

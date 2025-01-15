@@ -4,18 +4,54 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/common.css" />
+    <link rel="stylesheet" href="/css/write-board.css" />
     <title>게시글 작성 페이지</title>
   </head>
   <body style="visibility: hidden">
     <div id="topContainer"></div>
 
-    <div id="mainContainer" class="flexBoth" style="margin-top: 30px">
-      <div id="leftContainer" style="width: 20%" class="flexBoth"></div>
+    <div id="mainContainer" class="flexJustify" style="margin-top: 30px">
+      <div id="leftContainer" style="width: 20%" class="flexJustify"></div>
       <div id="rightContainer" style="width: 80%">
-        <div id="edit-profile" class="tab-content active">
-          <h2>게시글 작성 페이지</h2>
-          <p>여기에 게시글 작성 폼이 들어갑니다.</p>
-        </div>
+        <form id="createBoardForm">
+          <div class="form-group">
+            <label for="title">제목</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              placeholder="게시글 제목을 입력해주세요."
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="description">내용</label>
+            <textarea
+              id="description"
+              name="description"
+              placeholder="게시글 내용을 입력해주세요."
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>이미지 업로드</label>
+            <div id="dropZone" class="drop-zone">
+              <p>드래그 & 드랍 또는 클릭을 통해 이미지를 저장하세요.</p>
+              <input
+                type="file"
+                id="imageInput"
+                name="image"
+                accept="image/*"
+                hidden
+              />
+            </div>
+            <div id="preview" class="image-preview"></div>
+          </div>
+
+          <button type="submit" class="btn-submit">게시글 생성</button>
+        </form>
       </div>
     </div>
 

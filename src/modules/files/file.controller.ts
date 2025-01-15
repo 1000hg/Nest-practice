@@ -7,11 +7,11 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService } from './file.service';
 
-@Controller('images')
+@Controller('files')
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
-  @Post('upload')
+  @Post('board/upload-image')
   @UseInterceptors(FileInterceptor('file'))
   async uploadImage(@UploadedFile() file: Express.Multer.File) {
     const optimizedFileName = await this.fileService.optimizeAndSaveImage(file);
