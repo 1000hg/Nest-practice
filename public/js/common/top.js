@@ -18,6 +18,8 @@ export class TopClient {
 
     this.loggedOut = document.getElementById('loggedOut');
     this.loggedIn = document.getElementById('loggedIn');
+
+    this.logo = document.getElementById('logo');
   }
 
   Init() {
@@ -58,12 +60,16 @@ export class TopClient {
 
     //마이페이지
     this.myPageBtn.addEventListener('click', function () {
-      window.location.href = '/page/mypage';
+      window.location.href = '/page/update-user';
     });
 
     //구글 로그인
     this.googleLoginBtn.addEventListener('click', () => {
       this.OpenGooglePopup();
+    });
+
+    this.logo.addEventListener('click', () => {
+      window.location.href = '/';
     });
 
     //윈도우 클릭 이벤트

@@ -8,7 +8,7 @@ import config from './config/index';
 import { FileLogger } from 'log/file-logger';
 import { CronModule } from 'cron/cron.module';
 import { FrontModule } from 'front/front.module';
-import { BoardModule } from 'modules/posts/board.module';
+import { BoardModule } from 'modules/boards/board.module';
 
 @Module({
   imports: [
