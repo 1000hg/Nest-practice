@@ -1,0 +1,127 @@
+<link rel="stylesheet" href="/css/top.css" />
+
+<div id="top" class="flexBoth" style="gap: 3rem">
+  <div>
+    <img src="/img/logo.png" alt="" id="logo" />
+  </div>
+
+  <div class="flexBoth" style="border: 1px solid #ccc; border-radius: 5px">
+    <input type="text" class="input-text" style="width: 500px" />
+    <img
+      src="/img/magnifying-glass.png"
+      alt=""
+      style="width: 25px; height: 25px; margin-right: 10px"
+    />
+  </div>
+
+  <div class="logged-out" id="loggedOut" style="display: none; gap: 10px">
+    <button id="loginOpenBtn" class="button-default">로그인</button>
+    <button id="signUpOpenBtn" class="button-default">회원가입</button>
+  </div>
+
+  <div
+    class="logged-in flexBoth"
+    id="loggedIn"
+    style="gap: 20px; display: none"
+  >
+    <div class="flexBoth">
+      <img
+        id="myPageBtn"
+        src="/img/mypage.png"
+        alt=""
+        style="width: 30px; height: 30px; cursor: pointer"
+      />
+    </div>
+    <button id="logoutBtn" class="button-default">로그아웃</button>
+  </div>
+</div>
+
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" id="loginCloseBtn">&times;</span>
+    <h2>로그인</h2>
+    <form id="loginForm">
+      <div class="flex" style="justify-content: start; width: 85%">
+        <label for="username">이메일</label>
+      </div>
+      <input
+        type="text"
+        id="email"
+        name="email"
+        class="modal-input"
+        required
+      /><br />
+      <div class="flex" style="justify-content: start; width: 85%">
+        <label for="password">비밀번호</label>
+      </div>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        class="modal-input"
+        required
+      /><br />
+      <button type="submit" class="button-default">로그인</button>
+    </form>
+
+    <div class="flexBoth" style="margin: 30px 0px 30px 0px">
+      <img
+        src="/img/google.png"
+        alt=""
+        style="width: 30px; height: 30px; cursor: pointer"
+        id="googleLoginBtn"
+      />
+    </div>
+  </div>
+</div>
+
+<div id="signUpModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" id="signUpCloseBtn">&times;</span>
+    <h2>회원가입</h2>
+    <form id="signForm">
+      <div class="flex" style="justify-content: start; width: 85%">
+        <label for="username">이메일</label>
+      </div>
+      <input
+        type="text"
+        id="email"
+        name="email"
+        class="modal-input"
+        required
+      /><br />
+      <div class="flex" style="justify-content: start; width: 85%">
+        <label for="password">비밀번호</label>
+      </div>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        class="modal-input"
+        required
+      /><br />
+      <div class="flex" style="justify-content: start; width: 85%">
+        <label for="name">이름</label>
+      </div>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        class="modal-input"
+        required
+      /><br />
+
+      <div class="flex" style="justify-content: start; width: 85%">
+        <label for="nickname">닉네임</label>
+      </div>
+      <input
+        type="text"
+        id="nickname"
+        name="nickname"
+        class="modal-input"
+        required
+      /><br />
+      <button type="submit" class="button-default">회원가입</button>
+    </form>
+  </div>
+</div>

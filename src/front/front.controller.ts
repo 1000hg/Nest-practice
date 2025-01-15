@@ -5,15 +5,9 @@ import { PathUtil } from 'util/path.util';
 @Controller('page')
 export class FrontController {
   constructor(private readonly pathUtill: PathUtil) {}
-  @Get('signup')
+  @Get('mypage')
   getSignupPage(@Res() res: Response) {
-    const filePath = this.pathUtill.GetFilePath('signup');
-    return res.sendFile(filePath);
-  }
-
-  @Get('login')
-  getLoginPage(@Res() res: Response) {
-    const filePath = this.pathUtill.GetFilePath('login');
+    const filePath = this.pathUtill.GetFilePath('mypage');
     return res.sendFile(filePath);
   }
 }
