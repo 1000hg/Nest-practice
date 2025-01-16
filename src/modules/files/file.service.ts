@@ -6,7 +6,7 @@ import { promises as fs } from 'fs';
 @Injectable()
 export class FileService {
   async optimizeAndSaveImage(file: Express.Multer.File): Promise<string> {
-    const uploadDir = join(__dirname, '..', '..', '..', 'uploads', 'board');
+    const uploadDir = join(__dirname, '..', '..', 'uploads', 'board');
 
     try {
       await fs.access(uploadDir);

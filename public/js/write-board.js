@@ -14,6 +14,7 @@ class WriteBoardClient {
     this.createBoardForm = document.getElementById('createBoardForm');
 
     this.uploadedImageFile = null;
+    this.uploadedImageURL = null;
   }
 
   async Init() {
@@ -77,32 +78,50 @@ class WriteBoardClient {
     this.createBoardForm.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      const title = document.getElementById('title').value;
-      const description = document.getElementById('description').value;
-
       if (!this.uploadedImageFile) {
-        alert('Please upload an image.');
+        alert('이미지를 업로드 해주세요.');
         return;
       }
 
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('description', description);
-      formData.append('file', this.uploadedImageFile);
+      const saveImageForm = new FormData();
+      saveImageForm.append('imageFile', this.uploadedImageFile);
 
       fetch('/files/board/upload-image', {
         method: 'POST',
-        body: formData,
+        body: saveImageForm,
       })
         .then((response) => response.json())
         .then((data) => {
-          alert('Board created successfully!');
-          console.log(data);
+          this.uploadedImageURL = data;
+          this.SetBoard();
         })
         .catch((error) => {
           console.error('Error:', error);
         });
     });
+  }
+
+  SetBoard() {
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('image_url', this.uploadedImageURL);
+
+    fetch('/board/createInfo', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        alert('게시글을 등록하였습니다.');
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   }
 }
 

@@ -12,7 +12,7 @@ export class FileController {
   constructor(private readonly fileService: FileService) {}
 
   @Post('board/upload-image')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('imageFile'))
   async uploadImage(@UploadedFile() file: Express.Multer.File) {
     const optimizedFileName = await this.fileService.optimizeAndSaveImage(file);
     const imageUrl = `/uploads/board/${optimizedFileName}`;
