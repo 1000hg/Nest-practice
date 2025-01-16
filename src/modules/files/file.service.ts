@@ -1,24 +1,44 @@
-import { Injectable } from '@nestjs/common';
-import * as sharp from 'sharp';
-import { join } from 'path';
-import { promises as fs } from 'fs';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class FileService {
-  async optimizeAndSaveImage(file: Express.Multer.File): Promise<string> {
-    const uploadDir = join(__dirname, '..', '..', '..', 'uploads', 'board');
+  private readonly uploadDir = path.join(
+    __dirname,
+    '..',
+    '..',
+    'uploads',
+    'board',
+  );
 
-    try {
-      await fs.access(uploadDir);
-    } catch (err) {
-      await fs.mkdir(uploadDir);
+  async optimizeAndSaveImage(file: Express.Multer.File): Promise<string> {
+    const optimizedFileName = `${Date.now()}-${file.originalname}`;
+    const filePath = path.join(this.uploadDir, optimizedFileName);
+
+    if (!fs.existsSync(this.uploadDir)) {
+      fs.mkdirSync(this.uploadDir, { recursive: true });
     }
 
-    const fileName = `${Date.now()}_${file.originalname}`;
-    const filePath = join(uploadDir, fileName);
+    fs.writeFileSync(filePath, file.buffer);
+    return optimizedFileName;
+  }
 
-    await sharp(file.buffer).jpeg({ quality: 80 }).toFile(filePath);
+  async deleteImage(fileName: string): Promise<void> {
+    const filePath = path.join(this.uploadDir, fileName);
 
-    return fileName;
+    if (!fs.existsSync(filePath)) {
+      throw new HttpException('File not found', HttpStatus.NOT_FOUND);
+    }
+
+    try {
+      fs.unlinkSync(filePath);
+    } catch (error) {
+      console.error('Error deleting file:', error);
+      throw new HttpException(
+        'Failed to delete the file',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

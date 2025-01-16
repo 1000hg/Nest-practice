@@ -8,6 +8,11 @@
   align-items: center;
 }
 
+.flexJustify {
+  display: flex;
+  justify-content: center;
+}
+
 .input-text {
   padding: 10px 15px;
   font-size: 16px;
@@ -70,12 +75,6 @@
 .close-btn:focus {
   color: black;
   text-decoration: none;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .modal-input {

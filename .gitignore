@@ -58,3 +58,5 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 # custom
 /src/backup/bin/*
 /src/log/typeorm.log
+
+/src/uploads/*

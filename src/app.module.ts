@@ -9,6 +9,7 @@ import { FileLogger } from 'log/file-logger';
 import { CronModule } from 'cron/cron.module';
 import { FrontModule } from 'front/front.module';
 import { BoardModule } from 'modules/boards/board.module';
+import { FileModule } from 'modules/files/file.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { BoardModule } from 'modules/boards/board.module';
     AuthModule,
     BoardModule,
     CronModule,
+    FileModule,
   ],
 })
 export class AppModule {}

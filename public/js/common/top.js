@@ -1,3 +1,5 @@
+import { IsTokenExpired } from '../util/token.js';
+
 export class TopClient {
   constructor() {
     //로그인 모달
@@ -131,17 +133,16 @@ export class TopServer {
   }
 
   OnLoad() {
-    window.onload = () => {
-      const accessToken = localStorage.getItem('accessToken');
+    const accessToken = localStorage.getItem('accessToken');
 
-      if (accessToken) {
-        this.loggedOut.style.display = 'none';
-        this.loggedIn.style.display = 'flex';
-      } else {
-        this.loggedOut.style.display = 'flex';
-        this.loggedIn.style.display = 'none';
-      }
-    };
+    if (accessToken) {
+      this.StartTokenExpirationCheck();
+      this.loggedOut.style.display = 'none';
+      this.loggedIn.style.display = 'flex';
+    } else {
+      this.loggedOut.style.display = 'flex';
+      this.loggedIn.style.display = 'none';
+    }
   }
 
   Login() {
@@ -166,6 +167,8 @@ export class TopServer {
 
           localStorage.setItem('accessToken', accessToken);
           localStorage.setItem('refreshToken', refreshToken);
+
+          this.StartTokenExpirationCheck();
 
           window.location.href = '/';
         } else {
@@ -204,5 +207,23 @@ export class TopServer {
         alert('An error occurred during logout.');
       }
     });
+  }
+
+  /** 토큰 만료 주기적으로 확인 */
+  StartTokenExpirationCheck() {
+    if (this.checkTokenInterval) {
+      clearInterval(this.checkTokenInterval);
+    }
+
+    this.checkTokenInterval = setInterval(() => {
+      const accessToken = localStorage.getItem('accessToken');
+      if (accessToken && IsTokenExpired(accessToken)) {
+        alert('세션이 만료되었습니다.');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        window.location.href = '/';
+        clearInterval(this.checkTokenInterval);
+      }
+    }, 1000);
   }
 }

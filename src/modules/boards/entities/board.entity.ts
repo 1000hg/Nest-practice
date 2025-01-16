@@ -19,7 +19,7 @@ export class Board {
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
-  @Column({ type: 'bigint', unsigned: true, unique: true })
+  @Column({ type: 'bigint', unsigned: true })
   user_id: number;
 
   @Column({ type: 'varchar', length: 255 })
