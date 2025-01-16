@@ -62,8 +62,10 @@ export class AuthController {
 
   @Get('req-verify-email')
   @ApiOperation({ summary: '이메일 인증 요청' })
-  async reqVerifyEmail(@Query('email') email: string): Promise<void> {
+  async reqVerifyEmail(@Query('email') email: string): Promise<any> {
     await this.authService.reqVerifyEmail(email);
+
+    return { message: '메일을 전송하였습니다.' };
   }
 
   @Get('res-verify-email')

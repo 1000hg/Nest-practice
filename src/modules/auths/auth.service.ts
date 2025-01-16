@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { UserService } from 'modules/users/user.service';
 import * as bcrypt from 'bcrypt';
@@ -37,6 +42,16 @@ export class AuthService {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('이메일 또는 비밀번호가 잘못되었습니다.');
+    }
+
+    if (user.is_email_verified != true) {
+      throw new HttpException(
+        {
+          message: '이메일 인증을 해주세요.',
+          code: 'EMAIL_NOT_VERIFIED',
+        },
+        HttpStatus.FORBIDDEN,
+      );
     }
 
     const accessToken = await this.tokenService.createAccessToken(

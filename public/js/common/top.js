@@ -123,6 +123,8 @@ export class TopServer {
 
     this.loggedOut = document.getElementById('loggedOut');
     this.loggedIn = document.getElementById('loggedIn');
+
+    this.signForm = document.getElementById('signForm');
   }
 
   Init() {
@@ -130,6 +132,7 @@ export class TopServer {
 
     this.Login();
     this.Logout();
+    this.Signup();
   }
 
   OnLoad() {
@@ -173,7 +176,18 @@ export class TopServer {
           window.location.href = '/';
         } else {
           const error = await response.json();
-          alert(`Login failed: ${error.message}`);
+
+          if (error.code === 'EMAIL_NOT_VERIFIED') {
+            const mailState = confirm(
+              '이메일 인증이 필요합니다. 인증을 진행하시겠습니까?',
+            );
+            if (mailState) {
+              this.SendVerifyMail(data.email);
+              alert('이메일을 확인해주세요.');
+            }
+          } else {
+            alert(`Login failed: ${error.message}`);
+          }
         }
       } catch (err) {
         console.error('Error:', err);
@@ -194,6 +208,8 @@ export class TopServer {
           },
         });
 
+        console.log(response);
+
         if (response.ok) {
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
@@ -207,6 +223,81 @@ export class TopServer {
         alert('An error occurred during logout.');
       }
     });
+  }
+
+  Signup() {
+    this.signForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const signEmail = document.getElementById('signEmail').value;
+      const signPassword = document.getElementById('signPassword').value;
+      const name = document.getElementById('name').value;
+      const nickname = document.getElementById('nickname').value;
+
+      const data = {
+        email: signEmail,
+        password: signPassword,
+        name: name,
+        nickname: nickname,
+        provider: 'local',
+      };
+
+      try {
+        const response = await fetch('/user/createInfo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          const mailState = confirm(
+            '이메일 인증이 필요합니다. 인증을 진행하시겠습니까?',
+          );
+          if (mailState) {
+            this.SendVerifyMail(signEmail);
+          } else {
+            alert('계정을 생성하였습니다. 로그인시 메일 인증을 해주세요.');
+            window.location.href = '/';
+          }
+        } else {
+          const error = await response.json();
+          alert(`회원가입 실패: ${error.message}`);
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        alert('회원가입 중 오류가 발생했습니다.');
+      }
+    });
+  }
+
+  async SendVerifyMail(email) {
+    console.log(email);
+    try {
+      const response = await fetch(`/auth/req-verify-email?email=${email}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log(response);
+
+      if (response.ok) {
+        const result = await response.json();
+        alert('이메일을 확인해주세요.');
+        console.log(result);
+
+        window.location.href = '/';
+      } else {
+        const error = response.json();
+        alert(`인증 메일 전송 실패: ${error.message}`);
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      alert('이메일 인증에 오류가 발생했습니다.');
+    }
   }
 
   /** 토큰 만료 주기적으로 확인 */
