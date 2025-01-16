@@ -1,5 +1,7 @@
 import {
   Controller,
+  Delete,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -17,5 +19,11 @@ export class FileController {
     const optimizedFileName = await this.fileService.optimizeAndSaveImage(file);
     const imageUrl = `/uploads/board/${optimizedFileName}`;
     return { imageUrl };
+  }
+
+  @Delete('board/delete-image/:fileName')
+  async deleteImage(@Param('fileName') fileName: string) {
+    await this.fileService.deleteImage(fileName);
+    return { message: '이미지가 삭제되었습니다.' };
   }
 }

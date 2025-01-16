@@ -1,8 +1,17 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { BoardService } from './board.service';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { Board } from './entities/board.entity';
 import { CreateBoardDto } from './dto/create-board.dto';
+import { JwtAuthGuard } from 'modules/auths/guards/jwt-auth.guard';
 
 @Controller('board')
 export class BoardController {
@@ -10,7 +19,14 @@ export class BoardController {
 
   @Post('createInfo')
   @ApiOperation({ summary: '게시글 생성' })
-  async createInfo(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  async createInfo(
+    @Req() req: any,
+    @Body() createBoardDto: CreateBoardDto,
+  ): Promise<Board> {
+    createBoardDto.user_id = req.user.userId;
     return this.boardService.createInfo(createBoardDto);
   }
 }

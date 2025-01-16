@@ -92,7 +92,7 @@ class WriteBoardClient {
       })
         .then((response) => response.json())
         .then((data) => {
-          this.uploadedImageURL = data;
+          this.uploadedImageURL = data.imageUrl;
           this.SetBoard();
         })
         .catch((error) => {
@@ -105,14 +105,20 @@ class WriteBoardClient {
     const title = document.getElementById('title').value;
     const description = document.getElementById('description').value;
 
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('image_url', this.uploadedImageURL);
+    const data = {
+      user_id: -1,
+      title: title,
+      description: description,
+      image_url: this.uploadedImageURL,
+    };
 
     fetch('/board/createInfo', {
       method: 'POST',
-      body: formData,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+      body: JSON.stringify(data),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -121,7 +127,18 @@ class WriteBoardClient {
       })
       .catch((error) => {
         console.error('Error:', error);
+        this.RemoveImage();
       });
+  }
+
+  RemoveImage() {
+    console.log('삭제 : ' + this.uploadedImageURL);
+    fetch(`/board/delete-image/${this.uploadedImageURL}`, {
+      method: 'DELETE',
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data.message))
+      .catch((err) => console.error('Error:', err));
   }
 }
 
