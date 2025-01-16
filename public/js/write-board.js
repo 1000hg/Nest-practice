@@ -88,6 +88,9 @@ class WriteBoardClient {
 
       fetch('/files/board/upload-image', {
         method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
         body: saveImageForm,
       })
         .then((response) => response.json())
@@ -123,6 +126,7 @@ class WriteBoardClient {
       .then((response) => response.json())
       .then((data) => {
         alert('게시글을 등록하였습니다.');
+        window.location.reload();
         console.log(data);
       })
       .catch((error) => {
@@ -132,9 +136,11 @@ class WriteBoardClient {
   }
 
   RemoveImage() {
-    console.log('삭제 : ' + this.uploadedImageURL);
     fetch(`/board/delete-image/${this.uploadedImageURL}`, {
       method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
     })
       .then((response) => response.json())
       .then((data) => console.log(data.message))
