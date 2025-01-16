@@ -218,7 +218,7 @@ export class TopServer {
     this.checkTokenInterval = setInterval(() => {
       const accessToken = localStorage.getItem('accessToken');
       if (accessToken && IsTokenExpired(accessToken)) {
-        alert('Your session has expired. You will be logged out.');
+        alert('세션이 만료되었습니다.');
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         window.location.href = '/';
