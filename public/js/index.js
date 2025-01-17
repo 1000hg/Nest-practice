@@ -24,6 +24,7 @@ class MainController {
   OnLoad() {
     LoadTop(this.topContainer);
     this.GetCategory();
+    this.GetBoard();
   }
 
   OnClick() {
@@ -64,6 +65,22 @@ class MainController {
 
           this.categoryMenu.appendChild(a);
         });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+  GetBoard() {
+    fetch('/board/readByBoardAll', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
       })
       .catch((error) => {
         console.error('Error:', error);

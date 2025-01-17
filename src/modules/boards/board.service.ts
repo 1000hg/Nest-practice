@@ -25,4 +25,30 @@ export class BoardService {
 
     return this.boardRepository.save(board);
   }
+
+  async readByBoardAll(
+    filters?: Partial<Board>,
+    orderBy?: { field: keyof Board; direction: 'ASC' | 'DESC' },
+  ): Promise<Board[]> {
+    const where: Partial<Board> = {};
+
+    if (filters?.category_id) {
+      where.category_id = filters.category_id;
+    }
+
+    if (filters?.is_active) {
+      where.is_active = filters.is_active;
+    }
+
+    const order: { [key in keyof Board]?: 'ASC' | 'DESC' } = {};
+
+    if (orderBy) {
+      order[orderBy.field] = orderBy.direction;
+    }
+
+    return this.boardRepository.find({
+      where,
+      order,
+    });
+  }
 }
