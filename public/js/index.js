@@ -12,6 +12,8 @@ class MainController {
     //정렬
     this.sort = document.getElementById('sort');
     this.sortBtn = document.getElementById('sortBtn');
+
+    this.categoryMenu = document.getElementById('categoryMenu');
   }
 
   async Init() {
@@ -21,6 +23,7 @@ class MainController {
 
   OnLoad() {
     LoadTop(this.topContainer);
+    this.GetCategory();
   }
 
   OnClick() {
@@ -43,6 +46,28 @@ class MainController {
         sort.classList.remove('show');
       }
     });
+  }
+
+  GetCategory() {
+    fetch('/category/readParentInfo', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        data.forEach((item) => {
+          const a = document.createElement('a');
+          a.textContent = item.title;
+          a.href = `#?category-id:${item.id}`;
+
+          this.categoryMenu.appendChild(a);
+        });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   }
 }
 
