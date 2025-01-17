@@ -1,7 +1,7 @@
 import { TopClient, TopServer } from './common/top.js';
 import { LoadTop } from './util/pageLoad.js';
 
-class MainClient {
+class MainController {
   constructor() {
     this.topContainer = document.getElementById('topContainer');
 
@@ -12,6 +12,8 @@ class MainClient {
     //정렬
     this.sort = document.getElementById('sort');
     this.sortBtn = document.getElementById('sortBtn');
+
+    this.categoryMenu = document.getElementById('categoryMenu');
   }
 
   async Init() {
@@ -21,6 +23,7 @@ class MainClient {
 
   OnLoad() {
     LoadTop(this.topContainer);
+    this.GetCategory();
   }
 
   OnClick() {
@@ -44,19 +47,32 @@ class MainClient {
       }
     });
   }
+
+  GetCategory() {
+    fetch('/category/readParentInfo', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        data.forEach((item) => {
+          const a = document.createElement('a');
+          a.textContent = item.title;
+          a.href = `#?category-id:${item.id}`;
+
+          this.categoryMenu.appendChild(a);
+        });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
 }
 
-class MainServer {
-  constructor() {}
-
-  Init() {}
-}
-
-let mainClient = new MainClient();
-mainClient.Init();
-
-let mainServer = new MainServer();
-mainServer.Init();
+let mainController = new MainController();
+mainController.Init();
 
 setTimeout(() => {
   document.body.style.visibility = 'visible';

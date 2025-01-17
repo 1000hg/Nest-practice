@@ -8,6 +8,11 @@ export class CreateBoardDto {
   user_id: number;
 
   @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  category_id: number;
+
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   title: string;

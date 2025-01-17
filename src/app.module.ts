@@ -10,6 +10,7 @@ import { CronModule } from 'cron/cron.module';
 import { FrontModule } from 'front/front.module';
 import { BoardModule } from 'modules/boards/board.module';
 import { FileModule } from 'modules/files/file.module';
+import { CategoryModule } from 'modules/categories/category.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { FileModule } from 'modules/files/file.module';
     BoardModule,
     CronModule,
     FileModule,
+    CategoryModule,
   ],
 })
 export class AppModule {}

@@ -1,3 +1,4 @@
+import { Category } from 'modules/categories/entities/category.entity';
 import { User } from 'modules/users/entities/user.entity';
 import {
   Column,
@@ -21,6 +22,13 @@ export class Board {
 
   @Column({ type: 'bigint', unsigned: true })
   user_id: number;
+
+  @ManyToOne(() => Category, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'category_id', referencedColumnName: 'id' })
+  category: Category;
+
+  @Column({ type: 'bigint', unsigned: true })
+  category_id: number;
 
   @Column({ type: 'varchar', length: 255 })
   title: string;
