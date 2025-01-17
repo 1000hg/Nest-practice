@@ -1,7 +1,7 @@
 import { TopClient, TopServer } from './common/top.js';
 import { LoadTop } from './util/pageLoad.js';
 
-class MainClient {
+class MainController {
   constructor() {
     this.topContainer = document.getElementById('topContainer');
 
@@ -46,17 +46,8 @@ class MainClient {
   }
 }
 
-class MainServer {
-  constructor() {}
-
-  Init() {}
-}
-
-let mainClient = new MainClient();
-mainClient.Init();
-
-let mainServer = new MainServer();
-mainServer.Init();
+let mainController = new MainController();
+mainController.Init();
 
 setTimeout(() => {
   document.body.style.visibility = 'visible';

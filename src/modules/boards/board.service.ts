@@ -12,10 +12,12 @@ export class BoardService {
   ) {}
 
   async createInfo(createBoardDto: CreateBoardDto): Promise<Board> {
-    const { user_id, title, description, image_url } = createBoardDto;
+    const { user_id, category_id, title, description, image_url } =
+      createBoardDto;
 
     const board = await this.boardRepository.create({
       user_id,
+      category_id,
       title,
       description,
       image_url,

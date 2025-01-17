@@ -2,7 +2,7 @@ import { MyPageLeftClient } from './common/mypage-left.js';
 import { TopClient, TopServer } from './common/top.js';
 import { LoadMyPageLeft, LoadTop } from './util/pageLoad.js';
 
-class WriteBoardClient {
+class WriteBoardController {
   constructor() {
     this.topContainer = document.getElementById('topContainer');
 
@@ -15,6 +15,8 @@ class WriteBoardClient {
 
     this.uploadedImageFile = null;
     this.uploadedImageURL = null;
+
+    this.category = document.getElementById('category');
   }
 
   async Init() {
@@ -26,6 +28,7 @@ class WriteBoardClient {
   async OnLoad() {
     await LoadTop(this.topContainer);
     await LoadMyPageLeft(this.leftContainer);
+    await this.GetCategory();
   }
 
   async OnClick() {
@@ -107,9 +110,11 @@ class WriteBoardClient {
   SetBoard() {
     const title = document.getElementById('title').value;
     const description = document.getElementById('description').value;
+    const categoryId = this.category.value;
 
     const data = {
       user_id: -1,
+      category_id: Number(categoryId),
       title: title,
       description: description,
       image_url: this.uploadedImageURL,
@@ -146,10 +151,33 @@ class WriteBoardClient {
       .then((data) => console.log(data.message))
       .catch((err) => console.error('Error:', err));
   }
+
+  GetCategory() {
+    fetch('/category/readParentInfo', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        data.forEach((item) => {
+          const option = document.createElement('option');
+
+          option.value = item.id;
+          option.textContent = item.title;
+
+          this.category.appendChild(option);
+        });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
 }
 
-let writeBoardClient = new WriteBoardClient();
-writeBoardClient.Init();
+let writeBoardController = new WriteBoardController();
+writeBoardController.Init();
 
 setTimeout(() => {
   document.body.style.visibility = 'visible';
