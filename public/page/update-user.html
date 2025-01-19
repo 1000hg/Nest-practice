@@ -22,32 +22,32 @@
           </div>
 
           <div class="flexJustify" style="flex-direction: column; gap: 30px">
-            <div>alxzkf123@gmail.com</div>
-            <div>김윤수</div>
-            <div>kys</div>
+            <div id="userInfo_email"></div>
+            <div id="userInfo_name"></div>
+            <div id="userInfo_nickname"></div>
           </div>
         </div>
 
         <h2 style="margin-top: 100px">정보 수정하기</h2>
-        <form id="createBoardForm">
+        <form id="updateUserForm">
           <div class="form-group">
             <label for="title">닉네임</label>
             <input
               type="text"
-              id="title"
-              name="title"
+              id="edit_nickname"
+              name="edit_nickname"
               placeholder="변경할 닉네임을 작성해주세요."
               required
               style="width: 30%"
             />
           </div>
 
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="title">기존 비밀번호</label>
             <input
-              type="text"
-              id="password"
-              name="password"
+              type="password"
+              id="edit_old_password"
+              name="edit_old_password"
               placeholder="기존 비밀번호를 입력해주세요."
               required
               style="width: 30%"
@@ -57,14 +57,14 @@
           <div class="form-group">
             <label for="title">수정 비밀번호</label>
             <input
-              type="text"
-              id="password"
-              name="password"
+              type="password"
+              id="edit_new_password"
+              name="edit_new_password"
               placeholder="수정할 비밀번호를 입력해주세요."
               required
               style="width: 30%"
             />
-          </div>
+          </div> -->
 
           <button type="submit" class="btn-submit" style="width: 30%">
             유저 정보 수정

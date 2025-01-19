@@ -23,5 +23,5 @@ export class UpdateUserDto {
   @ApiProperty()
   @IsBoolean()
   @IsOptional()
-  is_email_verified: boolean;
+  is_email_verified?: boolean;
 }

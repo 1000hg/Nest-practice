@@ -3,15 +3,20 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Patch,
   Post,
   Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'modules/auths/guards/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -56,8 +61,14 @@ export class UserController {
   }
 
   @Get('readById')
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'id로 유저 조회' })
-  async readById(@Query('id') id: number): Promise<User> {
+  async readById(@Req() req: any, @Query('id') id: number): Promise<User> {
+    if (req) {
+      id = req.user.userId;
+    }
     return this.userService.readById(id);
   }
 
@@ -68,11 +79,19 @@ export class UserController {
   }
 
   @Patch('updateInfo')
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '유저 수정' })
   async updateInfo(
+    @Req() req: any,
     @Query('id') id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
+    if (req) {
+      id = req.user.userId;
+    }
+
     return this.userService.updateInfo(id, updateUserDto);
   }
 

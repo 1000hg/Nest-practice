@@ -23,12 +23,12 @@ class WriteBoardController {
     this.OnLoad();
     this.OnClick();
     this.SetImageForm();
+    this.GetCategory();
   }
 
   async OnLoad() {
     await LoadTop(this.topContainer);
     await LoadMyPageLeft(this.leftContainer);
-    await this.GetCategory();
   }
 
   async OnClick() {
