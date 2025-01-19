@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/common.css" />
+    <link rel="stylesheet" href="/css/update-user.css" />
     <title>마이페이지</title>
   </head>
   <body style="visibility: hidden">
@@ -12,10 +13,63 @@
     <div id="mainContainer" class="flexJustify" style="margin-top: 30px">
       <div id="leftContainer" style="width: 20%" class="flexJustify"></div>
       <div id="rightContainer" style="width: 80%">
-        <div id="edit-profile" class="tab-content active">
-          <h2>유저 정보 수정</h2>
-          <p>여기에 유저 정보 수정 폼이 들어갑니다.</p>
+        <h2>유저 정보</h2>
+        <div class="flexAlignItem" style="gap: 50px">
+          <div class="flexJustify" style="flex-direction: column; gap: 30px">
+            <div>이메일</div>
+            <div>이름</div>
+            <div>닉네임</div>
+          </div>
+
+          <div class="flexJustify" style="flex-direction: column; gap: 30px">
+            <div>alxzkf123@gmail.com</div>
+            <div>김윤수</div>
+            <div>kys</div>
+          </div>
         </div>
+
+        <h2 style="margin-top: 100px">정보 수정하기</h2>
+        <form id="createBoardForm">
+          <div class="form-group">
+            <label for="title">닉네임</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              placeholder="변경할 닉네임을 작성해주세요."
+              required
+              style="width: 30%"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="title">기존 비밀번호</label>
+            <input
+              type="text"
+              id="password"
+              name="password"
+              placeholder="기존 비밀번호를 입력해주세요."
+              required
+              style="width: 30%"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="title">수정 비밀번호</label>
+            <input
+              type="text"
+              id="password"
+              name="password"
+              placeholder="수정할 비밀번호를 입력해주세요."
+              required
+              style="width: 30%"
+            />
+          </div>
+
+          <button type="submit" class="btn-submit" style="width: 30%">
+            유저 정보 수정
+          </button>
+        </form>
       </div>
     </div>
 

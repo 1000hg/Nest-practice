@@ -2,7 +2,7 @@ import { MyPageLeftClient } from './common/mypage-left.js';
 import { TopClient, TopServer } from './common/top.js';
 import { LoadMyPageLeft, LoadTop } from './util/pageLoad.js';
 
-class UpdateUserController {
+class BoardListController {
   constructor() {
     this.topContainer = document.getElementById('topContainer');
 
@@ -19,8 +19,8 @@ class UpdateUserController {
   }
 }
 
-let updateUserController = new UpdateUserController();
-updateUserController.Init();
+let boardListController = new BoardListController();
+boardListController.Init();
 
 setTimeout(() => {
   document.body.style.visibility = 'visible';
