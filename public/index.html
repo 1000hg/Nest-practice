@@ -26,93 +26,27 @@
       >
         <div class="dropdown" id="category">
           <div id="categoryBtn" class="dropdown-btn flexBoth">
-            <div>전체보기</div>
-            <div style="margin-left: 5px">(1,300)</div>
+            <div id="categoryText"></div>
+            <div id="categoryCount" style="margin-left: 5px"></div>
           </div>
           <div id="categoryMenu" class="dropdown-menu"></div>
         </div>
 
         <div class="dropdown" id="sort" style="width: 100px">
           <div id="sortBtn" class="dropdown-btn flexBoth">
-            <div>인기순</div>
+            <div id="sortText">인기순</div>
           </div>
-          <div class="dropdown-menu">
-            <a href="#option1">인기순</a>
-            <a href="#option2">최신순</a>
-          </div>
+          <div id="sortMenu" class="dropdown-menu"></div>
         </div>
       </div>
     </div>
 
     <div class="flexBoth" style="margin-top: 50px">
-      <div id="content" style="width: 1900px">
-        <div class="img-container">
-          <img
-            src="https://gongu.copyright.or.kr/gongu/wrt/cmmn/wrtFileImageView.do?wrtSn=13262118&filePath=L2Rpc2sxL25ld2RhdGEvMjAyMC8yMS9DTFMxMDAwNi82MmZhMWExMy03ZjRmLTQ1NWMtYTZlNy02ZTk2YjhjMjBkYTk=&thumbAt=Y&thumbSe=b_tbumb&wrtTy=10006"
-          />
-          <div class="img-desc">
-            Cinderella wearing European fashion of the mid-1860’s
-          </div>
-        </div>
-
-        <div class="img-container">
-          <img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/rapunzel.jpg" />
-          <div class="img-desc">Rapunzel, clothed in 1820’s period fashion</div>
-        </div>
-
-        <div class="img-container">
-          <img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/belle.jpg" />
-          <div class="img-desc">
-            Belle, based on 1770’s French court fashion
-          </div>
-        </div>
-
-        <div class="img-container">
-          <img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/mulan_2.jpg" />
-          <div class="img-desc">Mulan, based on the Ming Dynasty period</div>
-        </div>
-
-        <div class="img-container">
-          <img
-            src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/sleeping-beauty.jpg"
-          />
-          <div class="img-desc">
-            Sleeping Beauty, based on European fashions in 1485
-          </div>
-        </div>
-
-        <div class="img-container">
-          <img
-            src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/pocahontas_2.jpg"
-          />
-          <div class="img-desc">
-            Pocahontas based on 17th century Powhatan costume
-          </div>
-        </div>
-
-        <div class="img-container">
-          <img
-            src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/snow-white.jpg"
-          />
-          <div class="img-desc">
-            Snow White, based on 16th century German fashion
-          </div>
-        </div>
-
-        <div class="img-container">
-          <img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/ariel.jpg" />
-          <div class="img-desc">
-            Ariel wearing an evening gown of the 1890’s
-          </div>
-        </div>
-
-        <div class="img-container">
-          <img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/tiana.jpg" />
-          <div class="img-desc">
-            Tiana wearing the <i>robe de style</i> of the 1920’s
-          </div>
-        </div>
+      <div id="loading" class="loading">
+        <div class="spinner"></div>
+        Loading...
       </div>
+      <div id="content" style="width: 1900px"></div>
     </div>
 
     <script type="module" src="js/index.js"></script>

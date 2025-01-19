@@ -56,11 +56,11 @@ export class BoardController {
   async readByBoardAll(
     @Query('category_id') category_id?: number,
     @Query('is_active') is_active?: boolean,
-    @Query('created_at') created_at?: keyof Board,
+    @Query('order_field') order_field?: keyof Board,
     @Query('order_direction') order_direction?: 'ASC' | 'DESC',
   ): Promise<Board[]> {
     const filters: Partial<Board> = {};
-    if (category_id) {
+    if (category_id && category_id != 0) {
       filters.category_id = category_id;
     }
     if (is_active !== undefined) {
@@ -68,8 +68,8 @@ export class BoardController {
     }
 
     const orderBy =
-      created_at && order_direction
-        ? { field: created_at, direction: order_direction }
+      order_field && order_direction
+        ? { field: order_field, direction: order_direction }
         : undefined;
 
     return this.boardService.readByBoardAll(filters, orderBy);
